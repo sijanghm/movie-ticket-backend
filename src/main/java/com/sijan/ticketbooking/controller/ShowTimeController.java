@@ -2,7 +2,6 @@ package com.sijan.ticketbooking.controller;
 
 import com.sijan.ticketbooking.dto.request.ShowTimeDTO;
 import com.sijan.ticketbooking.entity.ShowTime;
-import com.sijan.ticketbooking.repository.ShowTimeRepository;
 import com.sijan.ticketbooking.service.ShowTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
