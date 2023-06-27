@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Getter
@@ -33,4 +34,7 @@ public class Movie {
     @Column(name = "is_showing", nullable = false)
     @JsonProperty("isShowing")
     private Boolean isShowing = true;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
+    private List<ShowTime> movieShowTime;
 }
