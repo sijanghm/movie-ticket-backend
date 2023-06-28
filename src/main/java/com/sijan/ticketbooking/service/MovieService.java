@@ -36,7 +36,7 @@ public class MovieService {
         exestingMovie.setMovieName(movie.getMovieName());
         exestingMovie.setDescription(movie.getDescription());
         exestingMovie.setReleaseDate(movie.getReleaseDate());
-        exestingMovie.setIsShowing(movie.getIsShowing());
+        //exestingMovie.setIsShowing(movie.getIsShowing());
         return movieRepository.save(exestingMovie);
     }
 

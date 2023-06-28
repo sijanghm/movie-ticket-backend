@@ -1,6 +1,7 @@
 package com.sijan.ticketbooking.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,9 @@ public class ShowTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")
     private Movie movie;
+    @Column(name = "is_showing", nullable = false)
+    @JsonProperty("isShowing")
+    private Boolean isShowing = true;
     private String showTime;
 
 

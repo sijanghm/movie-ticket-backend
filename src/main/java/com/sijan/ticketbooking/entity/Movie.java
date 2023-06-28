@@ -23,7 +23,6 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "movie_name", nullable = false)
     private String movieName;
     @Column(nullable = false)
@@ -31,10 +30,6 @@ public class Movie {
     @JsonFormat(pattern="yyyy-MM-dd")
     @Column(name = "release_date", nullable = false)
     private LocalDate releaseDate;
-    @Column(name = "is_showing", nullable = false)
-    @JsonProperty("isShowing")
-    private Boolean isShowing = true;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "movie")
     private List<ShowTime> movieShowTime;
 }
