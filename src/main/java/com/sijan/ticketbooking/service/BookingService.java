@@ -1,37 +1,70 @@
 package com.sijan.ticketbooking.service;
 
 
+import com.sijan.ticketbooking.dto.HallSeat;
 import com.sijan.ticketbooking.dto.request.BookingRequestDto;
-import com.sijan.ticketbooking.entity.Booking;
-import com.sijan.ticketbooking.entity.Seat;
+import com.sijan.ticketbooking.dto.response.BookingResponse;
+import com.sijan.ticketbooking.entity.SeatBooking;
+import com.sijan.ticketbooking.entity.ShowTime;
 import com.sijan.ticketbooking.repository.BookingRepo;
-import com.sijan.ticketbooking.repository.SeatRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sijan.ticketbooking.repository.SeatBookingRepository;
+import com.sijan.ticketbooking.repository.ShowTimeRepository;
+import com.sijan.ticketbooking.utils.HallSeatsUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class BookingService {
 
-    private BookingRepo bookingRepo;
+    private final BookingRepo bookingRepo;
+    private final SeatBookingRepository seatBookingRepository;
+    private final ShowTimeRepository showTimeRepository;
 
-    private SeatRepository seatRepository;
+    public BookingResponse bookTickets(BookingRequestDto bookingRequestDto) {
 
-    @Autowired
-    public BookingService(BookingRepo bookingRepo, SeatRepository seatRepository) {
-        this.bookingRepo = bookingRepo;
-        this.seatRepository = seatRepository;
-    }
-
-    public Booking bookTickets(BookingRequestDto bookingRequestDto) {
-        Optional<Seat> seatOptional = seatRepository.findById(bookingRequestDto.getSeatId());
-        if(seatOptional.isPresent()) {
-            Booking booking = new Booking();
-            booking.setSeat(seatOptional.get());
-            booking.setUserName(bookingRequestDto.getUserName());
-            return bookingRepo.save(booking);
+        Optional<ShowTime> optionalShowTime = showTimeRepository.findById(bookingRequestDto.getShowId());
+        if(optionalShowTime.isEmpty()){
+            //Bad Request
+            throw new RuntimeException("Invalid Show Id");
         }
-        throw  new RuntimeException("seat not found");
+
+        List<String> hallSeatList = HallSeatsUtils.getAllHallSeats().stream().map(HallSeat::getSeatId).toList();
+        //Validate seats from users, if it is invalid
+        bookingRequestDto.getSeatIds().forEach( seatId -> {
+            if(!hallSeatList.contains(seatId)){
+                //Bad Request
+                throw new RuntimeException("Invalid Seat Ids");
+            }
+        });
+
+        //check if the seats are already booked
+        List<SeatBooking> bookedSeats = seatBookingRepository.findAllBySeatIdsAndBookingDate(bookingRequestDto.getSeatIds(), bookingRequestDto.getBookingDate());
+        if(!bookedSeats.isEmpty() ){
+            //return message best for response
+            //Bad Request
+            throw new RuntimeException("Some seats are already booked");
+        }
+
+        //save bookings
+        bookingRequestDto.getSeatIds().forEach(seatId-> {
+            SeatBooking seatBooking = new SeatBooking();
+            seatBooking.setSeatId(seatId);
+            seatBooking.setBookedFor(bookingRequestDto.getUserName());
+            seatBooking.setBookedDate(bookingRequestDto.getBookingDate());
+            seatBooking.setShowTime(optionalShowTime.get());
+           seatBookingRepository.save(seatBooking);
+        });
+
+        return BookingResponse.builder()
+                .username(bookingRequestDto.getUserName())
+                .bookTimestamp(Instant.now())
+                .bookDate(bookingRequestDto.getBookingDate())
+                .seats(bookingRequestDto.getSeatIds())
+                .build();
     }
 }

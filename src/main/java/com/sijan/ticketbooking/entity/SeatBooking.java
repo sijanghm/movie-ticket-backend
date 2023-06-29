@@ -22,7 +22,10 @@ public class SeatBooking {
     private LocalDate bookedDate;
 
     @Column(name = "booked_at")
-    private Instant bookedTimeStamp;
+    private Instant bookedTimeStamp = Instant.now();
+
+    @Column(name = "bookedFor")
+    private String bookedFor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id")
