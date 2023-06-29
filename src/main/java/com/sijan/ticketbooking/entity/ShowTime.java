@@ -1,17 +1,14 @@
 package com.sijan.ticketbooking.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "show_times")
 public class ShowTime {
@@ -20,16 +17,13 @@ public class ShowTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "last_show_date", nullable = false)
+    private LocalDate lastShowDate;
+
+    private String showTime;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "movie_id")
     private Movie movie;
-    @Column(name = "is_showing", nullable = false)
-    @JsonProperty("isShowing")
-    private Boolean isShowing = true;
-    private String showTime;
-
-
-
 }

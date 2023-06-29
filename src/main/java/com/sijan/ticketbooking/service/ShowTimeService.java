@@ -1,5 +1,6 @@
 package com.sijan.ticketbooking.service;
 
+import com.sijan.ticketbooking.dto.request.RunningShowRequestDTO;
 import com.sijan.ticketbooking.dto.request.ShowTimeDTO;
 import com.sijan.ticketbooking.dto.response.RunningShow;
 import com.sijan.ticketbooking.entity.Movie;
@@ -15,9 +16,9 @@ import java.util.Optional;
 @Service
 public class ShowTimeService {
 
-    private ShowTimeRepository showTimeRepository;
+    private final ShowTimeRepository showTimeRepository;
 
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
     @Autowired
     public ShowTimeService(ShowTimeRepository showTimeRepository, MovieRepository movieRepository) {
@@ -31,6 +32,7 @@ public class ShowTimeService {
             ShowTime showTime = new ShowTime();
             showTime.setMovie(movieOptional.get());
             showTime.setShowTime(showTimeDTO.getShowTime());
+            showTime.setLastShowDate(showTimeDTO.getLastShowDate());
             showTimeRepository.save(showTime);
             return showTime;
         }
@@ -45,14 +47,14 @@ public class ShowTimeService {
             showTime.setId(showTimeOptional.get().getId());
             showTime.setMovie(showTimeOptional.get().getMovie());
             showTime.setShowTime(showTimeDTO.getShowTime());
-            showTime.setIsShowing(showTimeDTO.isShowing());
+            showTime.setLastShowDate(showTimeDTO.getLastShowDate());
             showTimeRepository.save(showTime);
         }
         throw new RuntimeException("Invalid Show Time Id");
     }
 
-    public List<RunningShow> getAllRunningShows(){
-        List<ShowTime> showTimeList = showTimeRepository.findAllRunningShow();
+    public List<RunningShow> getAllRunningShows(RunningShowRequestDTO showRequestDTO){
+        List<ShowTime> showTimeList = showTimeRepository.findAllRunningShow(showRequestDTO.getShowDate());
         return showTimeList
                 .stream()
                 .map(showTime ->
@@ -63,5 +65,9 @@ public class ShowTimeService {
                                 .movieDescription(showTime.getMovie().getDescription())
                                 .build()
                 ).toList();
+    }
+
+    public List<ShowTime> getAllShows() {
+        return showTimeRepository.findAll();
     }
 }

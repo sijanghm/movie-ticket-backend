@@ -8,14 +8,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class ShowTimeDTO {
-    private Long id;
-
-    private Long movieId;
-
-    private String showTime;
+public class RunningShowRequestDTO {
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate lastShowDate;
-
+    private LocalDate showDate;
 }
