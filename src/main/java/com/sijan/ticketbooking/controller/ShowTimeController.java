@@ -66,7 +66,7 @@ public class ShowTimeController {
        return ResponseEntity.ok(movieShowList);
     }
 
-    @GetMapping("/running")
+    @PostMapping("/running")
     public ResponseEntity<List<RunningShow>> getAllShowTimes(@RequestBody RunningShowRequestDTO showRequestDTO){
        return ResponseEntity.ok(showTimeService.getAllRunningShows(showRequestDTO));
     }
