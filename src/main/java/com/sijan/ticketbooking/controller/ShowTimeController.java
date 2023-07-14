@@ -70,4 +70,9 @@ public class ShowTimeController {
     public ResponseEntity<List<RunningShow>> getAllShowTimes(@RequestBody RunningShowRequestDTO showRequestDTO){
        return ResponseEntity.ok(showTimeService.getAllRunningShows(showRequestDTO));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RunningShow> getRunningShowById(@PathVariable("id") Long showId) {
+       return ResponseEntity.ok(showTimeService.getShowById(showId));
+    }
 }

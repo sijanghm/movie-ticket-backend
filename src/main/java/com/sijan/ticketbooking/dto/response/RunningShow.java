@@ -13,4 +13,5 @@ public class RunningShow {
     private String showTime;
     private String movieName;
     private String movieDescription;
+    private Double ticketPrice;
 }

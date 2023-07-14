@@ -70,4 +70,18 @@ public class ShowTimeService {
     public List<ShowTime> getAllShows() {
         return showTimeRepository.findAll();
     }
+
+    public RunningShow getShowById(Long showId){
+        Optional<ShowTime> optionalShowTime = showTimeRepository.findShowTimeById(showId);
+        if(optionalShowTime.isPresent()){
+            ShowTime showTime = optionalShowTime.get();
+            return RunningShow.builder()
+                    .id(showTime.getId())
+                    .showTime(showTime.getShowTime())
+                    .movieName(showTime.getMovie().getMovieName())
+                    .movieDescription(showTime.getMovie().getDescription())
+                    .build();
+        }
+        throw new RuntimeException("Invalid Request: invalid showTime id");
+    }
 }
