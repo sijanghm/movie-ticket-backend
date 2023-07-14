@@ -60,6 +60,7 @@ public class ShowTimeService {
                 .map(showTime ->
                         RunningShow.builder()
                                 .id(showTime.getId())
+                                .movieId(showTime.getMovie().getId())
                                 .showTime(showTime.getShowTime())
                                 .movieName(showTime.getMovie().getMovieName())
                                 .movieDescription(showTime.getMovie().getDescription())
