@@ -4,11 +4,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Builder
-public class HallSeat {
+public class HallSeatRow {
 
-    private String seatId;
-    private String booked;
+    private String row;
+    private Set<HallSeat> seats;
+
 }

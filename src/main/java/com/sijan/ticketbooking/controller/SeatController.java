@@ -1,6 +1,6 @@
 package com.sijan.ticketbooking.controller;
 
-import com.sijan.ticketbooking.dto.HallSeat;
+import com.sijan.ticketbooking.dto.HallSeatRow;
 import com.sijan.ticketbooking.dto.request.SeatRequestForBooking;
 import com.sijan.ticketbooking.service.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.Set;
 
 @RequestMapping("seats")
 @RestController
@@ -24,7 +24,7 @@ public class SeatController {
     }
 
     @PostMapping()
-    public ResponseEntity<List<HallSeat>> getAllSeats(@RequestBody SeatRequestForBooking requestForBooking){
+    public ResponseEntity<Set<HallSeatRow>> getAllSeats(@RequestBody SeatRequestForBooking requestForBooking){
         return ResponseEntity.ok(seatService.getAllSeats(requestForBooking));
     }
 }

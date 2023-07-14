@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,11 @@ public class BookingService {
             throw new RuntimeException("Invalid Show Id");
         }
 
-        List<String> hallSeatList = HallSeatsUtils.getAllHallSeats().stream().map(HallSeat::getSeatId).toList();
+        List<String> hallSeatList = new ArrayList<>();
+        HallSeatsUtils.getAllHallSeats()
+                .forEach(seatrow -> {
+           hallSeatList.addAll(seatrow.getSeats().stream().map(HallSeat::getSeatId).toList());
+        });
         //Validate seats from users, if it is invalid
         bookingRequestDto.getSeatIds().forEach( seatId -> {
             if(!hallSeatList.contains(seatId)){
