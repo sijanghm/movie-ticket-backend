@@ -3,6 +3,7 @@ package com.sijan.ticketbooking.controller;
 import com.sijan.ticketbooking.entity.Movie;
 import com.sijan.ticketbooking.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class MovieController {
         this.movieService = movieService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("movies")
     public Movie addMovie(@RequestBody Movie movie) {
         return movieService.addMovie(movie);
@@ -34,11 +36,14 @@ public class MovieController {
         return movieService.getMovieById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("movies/{id}")
     public Movie updateMovie(@RequestBody Movie movie,@PathVariable("id") Long id){
         return movieService.updateMovie(movie, id);
     }
 
+
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("movies/{id}")
     public void deleteMovie(@PathVariable("id") Long id){
         movieService.deleteMovie(id);

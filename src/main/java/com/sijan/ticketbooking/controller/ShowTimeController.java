@@ -8,6 +8,7 @@ import com.sijan.ticketbooking.entity.ShowTime;
 import com.sijan.ticketbooking.service.ShowTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class ShowTimeController {
         this.showTimeService = showTimeService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<MovieShow> addShowTimeForMovie(@RequestBody ShowTimeDTO showTimeDTO) {
        ShowTime showTime = showTimeService.addShowTime(showTimeDTO);
@@ -38,6 +40,7 @@ public class ShowTimeController {
         return ResponseEntity.ok(movieShow);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     public ResponseEntity<MovieShow> updateShowTimeForMovie(@RequestBody ShowTimeDTO showTimeDTO){
         ShowTime showTime = showTimeService.updateShowTime(showTimeDTO);
@@ -66,6 +69,7 @@ public class ShowTimeController {
                ).toList();
        return ResponseEntity.ok(movieShowList);
     }
+
 
     @PostMapping("/running")
     public ResponseEntity<List<RunningShow>> getAllShowTimes(@RequestBody RunningShowRequestDTO showRequestDTO){
