@@ -1,6 +1,7 @@
 package com.sijan.ticketbooking.controller;
 
 
+import com.sijan.ticketbooking.dto.JwtAuthDto;
 import com.sijan.ticketbooking.dto.LoginDto;
 import com.sijan.ticketbooking.dto.RegisterDto;
 import com.sijan.ticketbooking.service.AuthService;
@@ -25,9 +26,11 @@ public class AuthController {
 
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto) {
-        String response = authService.login(loginDto);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<JwtAuthDto> login(@RequestBody LoginDto loginDto) {
+        String token = authService.login(loginDto);
+        JwtAuthDto jwtAuthDto =  new JwtAuthDto();
+        jwtAuthDto.setAccessToken(token);
+        return ResponseEntity.ok(jwtAuthDto);
     }
 
     @PostMapping("register")

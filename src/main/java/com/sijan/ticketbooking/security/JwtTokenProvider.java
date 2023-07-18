@@ -17,8 +17,8 @@ public class JwtTokenProvider {
 
     @Value("$(app.jwt-secret)")
     private String jwtSecret;
-    @Value("$(app-jwt-expiration-milliseconds)")
-    private long jwtExpirationDate;
+
+    private long jwtExpirationDate = 604800000;
 
     /**
      * generate token method

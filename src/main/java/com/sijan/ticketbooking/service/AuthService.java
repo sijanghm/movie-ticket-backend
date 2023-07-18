@@ -6,6 +6,7 @@ import com.sijan.ticketbooking.entity.Role;
 import com.sijan.ticketbooking.entity.User;
 import com.sijan.ticketbooking.repository.RoleRepository;
 import com.sijan.ticketbooking.repository.UserRepository;
+import com.sijan.ticketbooking.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,15 +29,19 @@ public class AuthService {
 
     private PasswordEncoder passwordEncoder;
 
+    private JwtTokenProvider jwtTokenProvider;
+
     @Autowired
     public AuthService(AuthenticationManager authenticationManager,
                        UserRepository userRepository,
                        RoleRepository roleRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       JwtTokenProvider jwtTokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public String login(LoginDto loginDto) {
@@ -46,7 +51,9 @@ public class AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "User Logged in successfully";
+        String token = jwtTokenProvider.generateToken(authentication);
+
+        return token;
     }
 
     public String register(RegisterDto registerDto) {
