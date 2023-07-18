@@ -11,7 +11,7 @@ import java.io.IOException;
 
 
 @Component
-public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
+public class JwtAuthError implements AuthenticationEntryPoint {
     /**
      * @param request
      * @param response
