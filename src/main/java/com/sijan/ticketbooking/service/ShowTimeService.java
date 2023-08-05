@@ -33,6 +33,7 @@ public class ShowTimeService {
             showTime.setMovie(movieOptional.get());
             showTime.setShowTime(showTimeDTO.getShowTime());
             showTime.setLastShowDate(showTimeDTO.getLastShowDate());
+            showTime.setTicketPrice(showTime.getTicketPrice());
             showTimeRepository.save(showTime);
             return showTime;
         }

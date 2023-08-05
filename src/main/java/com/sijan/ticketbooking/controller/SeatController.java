@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
 
-@RequestMapping("seats")
+@RequestMapping("/seats")
 @RestController
 public class SeatController {
 

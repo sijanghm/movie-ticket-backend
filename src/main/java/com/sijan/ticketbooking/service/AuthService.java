@@ -51,9 +51,7 @@ public class AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenProvider.generateToken(authentication);
-
-        return token;
+       return jwtTokenProvider.generateToken(authentication);
     }
 
     public String register(RegisterDto registerDto) {

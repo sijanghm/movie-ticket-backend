@@ -17,4 +17,5 @@ public class MovieShow {
     private String movieName;
     private String movieDescription;
     private LocalDate lastShowDate;
+    private Double ticketPrice;
 }
