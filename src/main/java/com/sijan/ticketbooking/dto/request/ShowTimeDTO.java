@@ -18,4 +18,6 @@ public class ShowTimeDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate lastShowDate;
 
+    private Double ticketPrice;
+
 }

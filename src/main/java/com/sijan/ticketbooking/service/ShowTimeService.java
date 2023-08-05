@@ -33,7 +33,7 @@ public class ShowTimeService {
             showTime.setMovie(movieOptional.get());
             showTime.setShowTime(showTimeDTO.getShowTime());
             showTime.setLastShowDate(showTimeDTO.getLastShowDate());
-            showTime.setTicketPrice(showTime.getTicketPrice());
+            showTime.setTicketPrice(showTimeDTO.getTicketPrice());
             showTimeRepository.save(showTime);
             return showTime;
         }
@@ -48,7 +48,7 @@ public class ShowTimeService {
             showTime.setId(showTimeOptional.get().getId());
             showTime.setMovie(showTimeOptional.get().getMovie());
             showTime.setShowTime(showTimeDTO.getShowTime());
-            showTime.setTicketPrice(showTime.getTicketPrice());
+            showTime.setTicketPrice(showTimeDTO.getTicketPrice());
             showTime.setLastShowDate(showTimeDTO.getLastShowDate());
             showTimeRepository.save(showTime);
         }
