@@ -48,6 +48,7 @@ public class ShowTimeService {
             showTime.setId(showTimeOptional.get().getId());
             showTime.setMovie(showTimeOptional.get().getMovie());
             showTime.setShowTime(showTimeDTO.getShowTime());
+            showTime.setTicketPrice(showTime.getTicketPrice());
             showTime.setLastShowDate(showTimeDTO.getLastShowDate());
             showTimeRepository.save(showTime);
         }
@@ -63,6 +64,7 @@ public class ShowTimeService {
                                 .id(showTime.getId())
                                 .movieId(showTime.getMovie().getId())
                                 .showTime(showTime.getShowTime())
+                                .ticketPrice(showTime.getTicketPrice())
                                 .movieName(showTime.getMovie().getMovieName())
                                 .movieDescription(showTime.getMovie().getDescription())
                                 .build()
@@ -81,6 +83,7 @@ public class ShowTimeService {
                     .id(showTime.getId())
                     .showTime(showTime.getShowTime())
                     .movieName(showTime.getMovie().getMovieName())
+                    .ticketPrice(showTime.getTicketPrice())
                     .movieDescription(showTime.getMovie().getDescription())
                     .build();
         }

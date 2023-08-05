@@ -34,6 +34,7 @@ public class ShowTimeController {
                .movieName(showTime.getMovie().getMovieName())
                .movieDescription(showTime.getMovie().getDescription())
                .showTime(showTime.getShowTime())
+               .ticketPrice(showTime.getTicketPrice())
                .lastShowDate(showTime.getLastShowDate())
                .build();
 
@@ -49,6 +50,7 @@ public class ShowTimeController {
                 .movieName(showTime.getMovie().getMovieName())
                 .movieDescription(showTime.getMovie().getDescription())
                 .showTime(showTime.getShowTime())
+                .ticketPrice(showTime.getTicketPrice())
                 .lastShowDate(showTime.getLastShowDate())
                 .build();
        return ResponseEntity.ok(movieShow);
@@ -64,6 +66,7 @@ public class ShowTimeController {
                        .movieName(showTime.getMovie().getMovieName())
                        .movieDescription(showTime.getMovie().getDescription())
                        .showTime(showTime.getShowTime())
+                       .ticketPrice(showTime.getTicketPrice())
                        .lastShowDate(showTime.getLastShowDate())
                        .build()
                ).toList();
