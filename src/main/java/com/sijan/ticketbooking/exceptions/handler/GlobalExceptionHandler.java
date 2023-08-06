@@ -1,6 +1,8 @@
 package com.sijan.ticketbooking.exceptions.handler;
 
 import com.sijan.ticketbooking.dto.response.ServerResponse;
+import com.sijan.ticketbooking.exceptions.BadRequestException;
+import com.sijan.ticketbooking.exceptions.TicketBookedException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<?> handleBadRequestException(BadRequestException exception, HttpServletRequest request){
+        String message = !exception.getMessage().trim().isEmpty() ? exception.getMessage() :  "Invalid Request";
+        return new ResponseEntity<>(buildErrorResponse(message), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TicketBookedException.class)
+    public ResponseEntity<?> handleBadRequestException(TicketBookedException exception, HttpServletRequest request){
         String message = !exception.getMessage().trim().isEmpty() ? exception.getMessage() :  "Invalid Request";
         return new ResponseEntity<>(buildErrorResponse(message), HttpStatus.BAD_REQUEST);
     }

@@ -18,16 +18,20 @@ public class SeatBooking {
     private Long id;
 
     private String seatId;
-    @Column(name = "bookeding_date")
-    private LocalDate bookedDate;
+    @Column(name = "show_date")
+    private LocalDate showDate;
 
     @Column(name = "booked_at")
     private Instant bookedTimeStamp = Instant.now();
 
-    @Column(name = "bookedFor")
-    private String bookedFor;
+    @Column(name = "booked_by")
+    private String bookedBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "show_id")
     private ShowTime showTime;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 }

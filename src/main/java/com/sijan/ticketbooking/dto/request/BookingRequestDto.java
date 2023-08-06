@@ -15,4 +15,5 @@ public class BookingRequestDto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate showDate;
     private Long showId;
+    private String paymentMethod;
 }

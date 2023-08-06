@@ -1,4 +1,4 @@
-package com.sijan.ticketbooking.exceptions.handler;
+package com.sijan.ticketbooking.exceptions;
 
 public class BadRequestException extends RuntimeException {
 

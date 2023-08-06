@@ -26,7 +26,7 @@ public class SeatService {
         Optional<ShowTime> showTimeOptional = showTimeRepository.findById(requestForBooking.getShowId());
 
         if ( showTimeOptional.isPresent()){
-          List<SeatBooking> seatBookings = seatBookingRepository.findAllByBookedDateAndShowTime(requestForBooking.getShowDate(), requestForBooking.getShowId());
+          List<SeatBooking> seatBookings = seatBookingRepository.findAllByShowDateAndShowTime(requestForBooking.getShowDate(), requestForBooking.getShowId());
           List<String> bookedSeats = seatBookings.stream().map(SeatBooking::getSeatId).toList();
           Set<HallSeatRow> hallSeatRows = HallSeatsUtils.getAllHallSeats();
           hallSeatRows
