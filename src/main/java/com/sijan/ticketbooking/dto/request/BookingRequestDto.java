@@ -11,10 +11,8 @@ import java.util.List;
 @Getter
 @Setter
 public class BookingRequestDto {
-
-    private String userName;
     private List<String> seatIds;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate bookingDate;
+    private LocalDate showDate;
     private Long showId;
 }
