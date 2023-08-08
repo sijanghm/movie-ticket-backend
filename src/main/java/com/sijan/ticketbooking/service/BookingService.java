@@ -87,7 +87,7 @@ public class BookingService {
         Payment payment = new Payment();
         payment.setPaymentMethod(bookingRequestDto.getPaymentMethod());
         payment.setPaymentTimestamp(Instant.now());
-        payment.setPaidBy(optionalUser.get().getName());
+        payment.setPaidBy(optionalUser.get().getUsername());
         payment.setTotalPrice(totalPrice);
 
         return paymentRepository.save(payment);
