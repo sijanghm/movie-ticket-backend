@@ -23,4 +23,8 @@ public class Payment  {
     @Column(name = "PAYMENT_TIMESTAMP")
     private Instant paymentTimestamp = Instant.now();
 
+    @ManyToOne
+    @JoinColumn(name="movie_id", referencedColumnName = "id")
+    private Movie movie;
+
 }

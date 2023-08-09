@@ -22,9 +22,19 @@ public class PaymentController {
         return ResponseEntity.ok(paymentList);
     }
 
-    @GetMapping("analytics/week")
-    public ResponseEntity<?> weekAnalytics() {
-        return ResponseEntity.ok(paymentService.getWeekAnalytics());
+    @GetMapping("analytics/week/payment/method")
+    public ResponseEntity<?> weekAnalyticsPayment() {
+        return ResponseEntity.ok(paymentService.getWeekAnalyticsByPaymentMethod());
+    }
+
+    @GetMapping("analytics/week/movies")
+    public ResponseEntity<?> weekAnalyticsMovie() {
+        return ResponseEntity.ok(paymentService.getWeekAnalyticByMovies());
+    }
+
+    @GetMapping("analytics/week/daily")
+    public ResponseEntity<?> weekAnalyticsDaily() {
+        return ResponseEntity.ok(paymentService.getWeeklyAnalyticByDay());
     }
 
 }

@@ -89,6 +89,7 @@ public class BookingService {
         payment.setPaymentTimestamp(Instant.now());
         payment.setPaidBy(optionalUser.get().getUsername());
         payment.setTotalPrice(totalPrice);
+        payment.setMovie(optionalShowTime.get().getMovie());
 
         return paymentRepository.save(payment);
     }
