@@ -100,7 +100,7 @@ public class BookingService {
 
     private void validateForSeatBooked(BookingRequestDto bookingRequestDto) {
         //check if the seats are already booked
-        List<SeatBooking> bookedSeats = seatBookingRepository.findAllBySeatIdsAndShowDate(bookingRequestDto.getSeatIds(), bookingRequestDto.getShowDate());
+        List<SeatBooking> bookedSeats = seatBookingRepository.findAllBySeatIdsAndShowDate(bookingRequestDto.getSeatIds(), bookingRequestDto.getShowDate(), bookingRequestDto.getShowId());
         if(!bookedSeats.isEmpty()) {
             throw new TicketBookedException("Some seats " + bookedSeats.stream().map(SeatBooking::getSeatId).collect(Collectors.joining(", "))  + " are already booked. Please try with other seats");
         }

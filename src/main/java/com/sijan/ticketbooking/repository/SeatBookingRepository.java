@@ -16,6 +16,6 @@ public interface SeatBookingRepository extends JpaRepository<SeatBooking, Long> 
     @Query("SELECT s FROM SeatBooking s WHERE s.showDate= :showDate and s.showTime.id = :showId")
     List<SeatBooking> findAllByShowDateAndShowTime(@Param("showDate")LocalDate showDate, @Param("showId") Long showId);
 
-    @Query("SELECT s FROM SeatBooking s WHERE s.seatId in :ids and s.showDate = :showDate")
-    List<SeatBooking> findAllBySeatIdsAndShowDate(@Param("ids") List<String> ids, @Param("showDate") LocalDate showDate);
+    @Query("SELECT s FROM SeatBooking s WHERE s.seatId in :ids and s.showDate = :showDate and s.showTime.id = :showId ")
+    List<SeatBooking> findAllBySeatIdsAndShowDate(@Param("ids") List<String> ids, @Param("showDate") LocalDate showDate, @Param("showId") Long showId);
 }
