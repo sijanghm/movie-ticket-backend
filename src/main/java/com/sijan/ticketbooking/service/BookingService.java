@@ -13,15 +13,18 @@ import com.sijan.ticketbooking.exceptions.TicketBookedException;
 import com.sijan.ticketbooking.repository.PaymentRepository;
 import com.sijan.ticketbooking.repository.SeatBookingRepository;
 import com.sijan.ticketbooking.repository.ShowTimeRepository;
+import com.sijan.ticketbooking.utils.CustomMultipartFile;
 import com.sijan.ticketbooking.utils.EmailSendUtils;
 import com.sijan.ticketbooking.utils.HallSeatsUtils;
+import com.sijan.ticketbooking.utils.TicketPdfGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -33,6 +36,8 @@ public class BookingService {
     private final UserService userService;
     private final PaymentRepository paymentRepository;
     private final EmailSendUtils emailSendUtils;
+    private final TicketPdfGenerator pdfGenerator;
+
     public BookingResponse bookTickets(BookingRequestDto bookingRequestDto) {
 
        Optional<User> optionalUser = userService.getCurrentUser();
@@ -53,9 +58,6 @@ public class BookingService {
                //maintain payment record
                final Payment paymentRecord = recordPayment(bookingRequestDto, optionalShowTime, optionalUser);
 
-               //inform user with email
-               
-
                //start seat booking record
                List<SeatBooking> seatBookings = new ArrayList<>();
                //save bookings
@@ -69,6 +71,31 @@ public class BookingService {
                    seatBooking.setPayment(paymentRecord);
                    seatBookings.add(seatBookingRepository.save(seatBooking));
                });
+
+               Map<String, String> ticketDetails = new LinkedHashMap<>();
+               ticketDetails.put("Seats", bookingRequestDto.getSeatIds().stream().collect(Collectors.joining(", ")));
+               ticketDetails.put("Ticket Count", String.valueOf(bookingRequestDto.getSeatIds().size()));
+               ticketDetails.put("Ticket Price", "NPR. " + optionalShowTime.get().getTicketPrice().toString());
+               ticketDetails.put("Total", "NPR. " + paymentRecord.getTotalPrice().toString());
+               ticketDetails.put("Payment Id", paymentRecord.getId().toString());
+               ticketDetails.put("Payment Method", paymentRecord.getPaymentMethod());
+               ticketDetails.put("Show Date", bookingRequestDto.getShowDate().toString());
+
+               //Generate Ticket Info PDF
+               CustomMultipartFile emailPdf = new CustomMultipartFile(pdfGenerator.createPdf(ticketDetails),"ticket-confirmation-detail.pdf", MediaType.APPLICATION_PDF.toString());
+
+               List<MultipartFile> attachments =  new ArrayList<>();
+               attachments.add(emailPdf);
+
+               String emailBody = " Dear " + optionalUser.get().getName() + ", <br>"
+                       + "Your ticket(s) has been booked and confirmed. <br>"
+                       + "Please find ticket details in attachments."
+                       + "<br> <br>"
+                       + "Warm Regards,<br>"
+                       + "Movie Hall";
+
+               //inform user with email
+               emailSendUtils.sendMail(attachments,  optionalUser.get().getEmail(),  "Ticket Booked",  emailBody );
 
                //send response to user
                return BookingResponse

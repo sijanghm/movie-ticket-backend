@@ -1,5 +1,6 @@
 package com.sijan.ticketbooking.utils;
 
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +9,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class EmailSendUtils{
@@ -18,23 +22,23 @@ public class EmailSendUtils{
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public String sendMail(MultipartFile[] file, String to, String[] cc, String subject, String body) {
+    public String sendMail(List<MultipartFile> attachments, String to, String subject, String body) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
             mimeMessageHelper.setFrom(fromEmail);
             mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setCc(cc);
+           // mimeMessageHelper.setCc(cc);
             mimeMessageHelper.setSubject(subject);
-            mimeMessageHelper.setText(body);
+            mimeMessageHelper.setText(body, true);
 
-
-            for(int i = 0 ; i < file.length; i++) {
-                mimeMessageHelper.addAttachment(
-                        file[i].getOriginalFilename(),
-                        new ByteArrayResource(file[i].getBytes())
-                );
-            }
+            attachments.forEach(file -> {
+                try {
+                    mimeMessageHelper.addAttachment(file.getOriginalFilename(), new ByteArrayResource(file.getBytes()));
+                } catch (MessagingException | IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             javaMailSender.send(mimeMessage);
             return "Mail Send success";
