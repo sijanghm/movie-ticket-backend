@@ -13,6 +13,7 @@ import com.sijan.ticketbooking.exceptions.TicketBookedException;
 import com.sijan.ticketbooking.repository.PaymentRepository;
 import com.sijan.ticketbooking.repository.SeatBookingRepository;
 import com.sijan.ticketbooking.repository.ShowTimeRepository;
+import com.sijan.ticketbooking.utils.EmailSendUtils;
 import com.sijan.ticketbooking.utils.HallSeatsUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class BookingService {
     private final ShowTimeRepository showTimeRepository;
     private final UserService userService;
     private final PaymentRepository paymentRepository;
-
+    private final EmailSendUtils emailSendUtils;
     public BookingResponse bookTickets(BookingRequestDto bookingRequestDto) {
 
        Optional<User> optionalUser = userService.getCurrentUser();
@@ -44,12 +45,18 @@ public class BookingService {
                        .forEach(seatrow -> {
                            hallSeatList.addAll(seatrow.getSeats().stream().map(HallSeat::getSeatId).toList());
                        });
-
+               //validate seats in hall
                validateSeatId(bookingRequestDto, hallSeatList);
+               //validate seats booking cases
                validateForSeatBooked(bookingRequestDto);
 
+               //maintain payment record
                final Payment paymentRecord = recordPayment(bookingRequestDto, optionalShowTime, optionalUser);
 
+               //inform user with email
+               
+
+               //start seat booking record
                List<SeatBooking> seatBookings = new ArrayList<>();
                //save bookings
                bookingRequestDto.getSeatIds().forEach(seatId-> {
@@ -63,6 +70,7 @@ public class BookingService {
                    seatBookings.add(seatBookingRepository.save(seatBooking));
                });
 
+               //send response to user
                return BookingResponse
                        .builder()
                        .message("Ticket Booked successfully")
