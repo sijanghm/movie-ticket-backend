@@ -41,8 +41,8 @@ public class MovieService {
     }
 
     public void deleteMovie(Long id) {
-//        Movie exestingMovie = this.getMovieById(id);
-//        movieRepository.delete(exestingMovie);
-        movieRepository.deleteById(id);
+        Movie exestingMovie = this.getMovieById(id);
+        exestingMovie.setIsShowing(false);
+        movieRepository.save(exestingMovie);
     }
 }
